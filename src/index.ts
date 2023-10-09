@@ -1,8 +1,11 @@
 import express from "express";
 import cors from "cors";
+import { variables } from "./variables/treatmentVariables";
 
 const app = express();
 
 app.use(cors());
-
-app.listen(3000, () => console.log("api inicializada na porta " + 3000));
+app.use(express.json());
+app.listen(variables.port, () =>
+  console.log("api inicializada na porta " + variables.port)
+);
