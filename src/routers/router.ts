@@ -1,6 +1,22 @@
-import express from "express";
-import { errorMiddleware } from "../middlewares/error.middleware";
+import { Router } from "express";
+import { CreateUserController } from "../connection/users/controllers/CreateUserController";
+import { PrismaClient } from "@prisma/client";
+import { ListAllUserController } from "../connection/users/controllers/GetAllUserController";
+import { ListUserIdController } from "../connection/users/controllers/GetUserId";
+import { UpdateUserController } from "../connection/users/controllers/UpdateUserController";
 
-const router = express.Router();
+const prisma = new PrismaClient();
+const router = Router();
 
-router.use(errorMiddleware);
+router.get("/");
+
+router.post("/registerUser", new CreateUserController().createUser);
+
+router.get("/users", new ListAllUserController().listAllUser);
+
+router.get("/users/:id", new ListUserIdController().listUserId);
+
+router.put("/userModify/:id", new UpdateUserController().updateUser);
+
+// router.use(errorMiddleware);
+export default router;

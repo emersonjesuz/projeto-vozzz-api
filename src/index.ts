@@ -1,11 +1,13 @@
+import "express-async-errors";
 import express from "express";
 import cors from "cors";
-import { variables } from "./variables/treatmentVariables";
+import { errorMiddleware } from "./middlewares/error.middleware";
+import router from "./routers/router";
 
 const app = express();
-
 app.use(cors());
 app.use(express.json());
-app.listen(variables.port, () =>
-  console.log("api inicializada na porta " + variables.port)
-);
+app.use(router);
+router.use(errorMiddleware);
+
+app.listen(3000, () => console.log("api inicializada na porta "));
