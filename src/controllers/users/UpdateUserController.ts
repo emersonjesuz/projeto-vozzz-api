@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import prisma from "../../../database/index";
-import { BadRequestError, NotFoundError } from "../../../helpers/api-error";
+import prisma from "../../database/index";
+import { BadRequestError, NotFoundError } from "../../helpers/api-error";
 
 export class UpdateUserController {
   async updateUser(req: Request, res: Response) {

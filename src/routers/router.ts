@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { CreateUserController } from "../connection/users/controllers/CreateUserController";
+import { CreateUserController } from "../controllers/users/CreateUserController";
 import { PrismaClient } from "@prisma/client";
 import { ListAllUserController } from "../connection/users/controllers/GetAllUserController";
 import { ListUserIdController } from "../connection/users/controllers/GetUserId";
