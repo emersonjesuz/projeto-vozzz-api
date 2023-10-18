@@ -24,7 +24,6 @@ export class UpdateUserController {
     });
 
     if (userWithSameEmail && userWithSameEmail.id !== parseInt(userId)) {
-      // Usuário com o mesmo email já existe e não é o usuário que está sendo atualizado.
       throw new BadRequestError("E-mail já existe.");
     }
 
