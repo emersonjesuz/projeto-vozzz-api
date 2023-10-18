@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import prisma from "../../../database/index";
-import { InvalidFormatError } from "../../../helpers/api-error";
+import prisma from "../../database/index";
+import { InvalidFormatError } from "../../helpers/api-error";
 
 class CreateUserController {
   async createUser(req: Request, res: Response) {
