@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import prisma from "../../../database";
-import { NotFoundError } from "../../../helpers/api-error";
+import prisma from "../../database";
+import { NotFoundError } from "../../helpers/api-error";
 
 export class ListUserIdController {
   async listUserId(req: Request, res: Response) {
