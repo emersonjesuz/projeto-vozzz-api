@@ -1,6 +1,8 @@
-import express from "express";
-import { errorMiddleware } from "../middlewares/error.middleware";
+import { Router } from "express";
+import publicationsRouter from "./publications.router";
 
-const router = express.Router();
+const router = Router();
 
-router.use(errorMiddleware);
+router.use(publicationsRouter);
+
+export default router;
