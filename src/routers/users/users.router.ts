@@ -1,27 +1,17 @@
 import { Router } from "express";
-import {
-  CreateUserController,
-  ListAllUserController,
-  ListUserIdController,
-  Login,
-  UpdateUserController,
-} from "../../controllers/users/UserController";
+import { User } from "../../controllers/users/UserController";
 import { authMiddleware } from "../../middlewares/users/auth";
 
-const userRouter = Router();
+const routerUser = Router();
 
-userRouter.post("/registerUser", new CreateUserController().createUser);
+routerUser.post("/registerUser", new User().createUser);
 
-userRouter.post("/login", new Login().login);
+routerUser.post("/login", new User().login);
 
-userRouter.get("/users", new ListAllUserController().listAllUser);
+routerUser.get("/users", authMiddleware, new User().listAllUser);
 
-userRouter.get("/users/:id", new ListUserIdController().listUserId);
+routerUser.get("/users/:id", authMiddleware, new User().listUserId);
 
-userRouter.put(
-  "/userModify/:id",
-  authMiddleware,
-  new UpdateUserController().updateUser
-);
+routerUser.put("/userModify/:id", authMiddleware, new User().updateUser);
 
-export default userRouter;
+export default routerUser;

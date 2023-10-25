@@ -8,7 +8,7 @@ import {
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-class CreateUserController {
+export class User {
   async createUser(req: Request, res: Response) {
     const { name, email, birth, password } = req.body;
 
@@ -37,17 +37,13 @@ class CreateUserController {
 
     return res.status(201).json(newUser);
   }
-}
 
-class ListAllUserController {
   async listAllUser(_: Request, res: Response) {
     const users = await prisma.user.findMany();
 
     return res.json({ users });
   }
-}
 
-class ListUserIdController {
   async listUserId(req: Request, res: Response) {
     const userId = req.params.id;
 
@@ -62,9 +58,7 @@ class ListUserIdController {
     }
     res.send(user);
   }
-}
 
-class UpdateUserController {
   async updateUser(req: Request, res: Response) {
     const { name, password, email } = req.body;
     const userId = req.params.id;
@@ -102,9 +96,7 @@ class UpdateUserController {
 
     return res.json(user);
   }
-}
 
-class Login {
   async login(req: Request, res: Response) {
     const { email, password } = req.body;
 
@@ -120,11 +112,3 @@ class Login {
     return res.json({ user: userLogin, token: token });
   }
 }
-
-export {
-  CreateUserController,
-  ListAllUserController,
-  ListUserIdController,
-  UpdateUserController,
-  Login,
-};
