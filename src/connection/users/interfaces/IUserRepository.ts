@@ -2,7 +2,7 @@
 
 // export interface IUserRepository {
 //   create(
-//     name: string,
+//     name: string | null,
 //     email: string,
 //     birth: Date,
 //     password: string

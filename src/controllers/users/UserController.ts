@@ -1,0 +1,130 @@
+import { Request, Response } from "express";
+import prisma from "../../database/index";
+import {
+  BadRequestError,
+  InvalidFormatError,
+  NotFoundError,
+} from "../../helpers/api-error";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+
+class CreateUserController {
+  async createUser(req: Request, res: Response) {
+    const { name, email, birth, password } = req.body;
+
+    const userExist = await prisma.user.findUnique({ where: { email } });
+
+    if (userExist) {
+      throw new InvalidFormatError("Usuário já existe!");
+    }
+
+    if (!email || !name || !birth || !password) {
+      throw new InvalidFormatError("Campos obrigatórios.");
+    }
+
+    const passwordHash = await bcrypt.hash(password, 8);
+    const date = new Date(birth);
+    const user = await prisma.user.create({
+      data: {
+        name,
+        email,
+        birth: date,
+        password: passwordHash,
+      },
+    });
+
+    const { password: _, ...newUser } = user;
+
+    return res.status(201).json(newUser);
+  }
+}
+
+class ListAllUserController {
+  async listAllUser(_: Request, res: Response) {
+    const users = await prisma.user.findMany();
+
+    return res.json({ users });
+  }
+}
+
+class ListUserIdController {
+  async listUserId(req: Request, res: Response) {
+    const userId = req.params.id;
+
+    const user = await prisma.user.findUnique({
+      where: {
+        id: parseInt(userId),
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundError("Usuário não encontrado.");
+    }
+    res.send(user);
+  }
+}
+
+class UpdateUserController {
+  async updateUser(req: Request, res: Response) {
+    const { name, password, email } = req.body;
+    const userId = req.params.id;
+
+    const userExist = await prisma.user.findUnique({
+      where: {
+        id: parseInt(userId),
+      },
+    });
+
+    if (!userExist) {
+      throw new NotFoundError("Usuário não encontrado.");
+    }
+
+    const userWithSameEmail = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
+
+    if (userWithSameEmail && userWithSameEmail.id !== parseInt(userId)) {
+      throw new BadRequestError("E-mail já existe.");
+    }
+
+    const user = await prisma.user.update({
+      where: {
+        id: parseInt(userId),
+      },
+      data: {
+        name,
+        password,
+        email,
+      },
+    });
+
+    return res.json(user);
+  }
+}
+
+class Login {
+  async login(req: Request, res: Response) {
+    const { email, password } = req.body;
+
+    const user = await prisma.user.findUnique({ where: { email } });
+    if (!user) throw new NotFoundError("Usuário não encontrado.");
+
+    const comparePass = await bcrypt.compare(password, user.password);
+    if (!comparePass) throw new BadRequestError("E-mail ou senha inválidos.");
+
+    const token = jwt.sign({ id: user.id }, "teste", { expiresIn: "6h" });
+
+    const { password: _, ...userLogin } = user;
+    return res.json({ user: userLogin, token: token });
+  }
+}
+
+export {
+  CreateUserController,
+  ListAllUserController,
+  ListUserIdController,
+  UpdateUserController,
+  Login,
+};
