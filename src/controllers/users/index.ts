@@ -106,7 +106,9 @@ export class User {
     const comparePass = await bcrypt.compare(password, user.password);
     if (!comparePass) throw new BadRequestError("E-mail ou senha inválidos.");
 
-    const token = jwt.sign({ id: user.id }, "teste", { expiresIn: "6h" });
+    const token = jwt.sign({ id: user.id }, process.env.JWT_PASS ?? "", {
+      expiresIn: "6h",
+    });
 
     const { password: _, ...userLogin } = user;
     return res.json({ user: userLogin, token: token });
