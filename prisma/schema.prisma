@@ -44,7 +44,7 @@ model Profiles {
 
 model Publications {
   id              Int      @id @default(autoincrement())
-  id_profile      Int
+  profileId       Int
   name            String   @map(name: "name") @db.VarChar(255)
   user_name       String?
   photo_profile   String?
@@ -55,5 +55,5 @@ model Publications {
   public_likes    Int      @default(0)
   public_coments  Int      @default(0)
 
-  Profile Profiles @relation(fields: [id_profile], references: [id])
+  Profile Profiles @relation(fields: [profileId], references: [id])
 }
