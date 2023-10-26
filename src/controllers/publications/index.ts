@@ -19,7 +19,7 @@ export default class PublicationController {
 
     const publication = await prisma.publications.create({
       data: {
-        profileId,
+        id_profile: profileId,
         name: userProfile!.name,
         user_name: userProfile!.userName,
         photo_profile: userProfile?.photo,

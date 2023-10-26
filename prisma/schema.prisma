@@ -10,13 +10,12 @@ generator client {
 model User {
   id       Int      @id @default(autoincrement())
   name     String   @map(name: "name") @db.VarChar(255)
-  email    String   @unique
+  email    String?  @unique
   birth    DateTime
-  password String
+  password String?
   actived  Boolean  @default(true)
   delete   Boolean  @default(false)
-  // Perfil   Perfil[]
-  // Post     Post[]
+  uid      Int?     @unique
 
   Profiles Profiles[]
 
