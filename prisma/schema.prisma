@@ -47,14 +47,14 @@ model Publications {
   id              Int      @id @default(autoincrement())
   profileId       Int
   name            String   @map(name: "name") @db.VarChar(255)
-  user_name       String?
-  photo_profile   String?
-  profile_checked Boolean  @default(false)
-  date_tamp       DateTime @default(now())
+  userName        String?
+  photo           String?
+  profileChecked  Boolean  @default(false)
+  date            DateTime @default(now())
   file            String?
   description     String?
   public_likes    Int      @default(0)
-  public_coments  Int      @default(0)
+  public_comments Int      @default(0)
 
   Profile Profiles @relation(fields: [profileId], references: [id])
 }

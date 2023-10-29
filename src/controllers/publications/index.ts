@@ -6,8 +6,7 @@ let page: number = 1;
 
 export default class PublicationController {
   async createPublication(req: Request, res: Response) {
-    const { profileId, file, description, public_likes, public_coments } =
-      req.body;
+    const { profileId, file, description } = req.body;
 
     const userProfile = await prisma.profiles.findUnique({
       where: { id: parseInt(profileId) },
@@ -15,22 +14,22 @@ export default class PublicationController {
 
     if (!userProfile) throw new BadRequestError("perfil não encontrado");
 
-    const date_tamp = new Date();
+    const date = new Date();
 
     const publication = await prisma.publications.create({
       data: {
-        id_profile: profileId,
+        profileId,
         name: userProfile!.name,
-        user_name: userProfile!.userName,
-        photo_profile: userProfile?.photo,
-        profile_checked: userProfile!.profileChecked,
-        date_tamp,
+        userName: userProfile!.userName,
+        photo: userProfile?.photo,
+        profileChecked: userProfile!.profileChecked,
+        date,
         file,
-        description,
-        public_likes,
-        public_coments,
+        description
       },
     });
+
+    page = 1;
 
     return res.json(publication);
   }
@@ -52,12 +51,12 @@ export default class PublicationController {
       skip: (page - 1) * 10,
       take: 10,
     });
-    if (!publication) throw new NotFoundError("Publicação não encontrada!");
+    if (!publication) throw new NotFoundError("Nenhuma publicação encontrada!");
     if (publication.length === 0)
-      return res.json({ message: "Nenhuma publicação encontrada" });
+      return res.json({ message: "As publicações acabaram" });
     page++;
 
-    return res.json(publication);
+    return res.json(publication.reverse());
   }
 
   async editPublication(req: Request, res: Response) {

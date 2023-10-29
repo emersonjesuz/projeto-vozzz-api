@@ -2,11 +2,12 @@
 CREATE TABLE "user" (
     "id" SERIAL NOT NULL,
     "name" VARCHAR(255) NOT NULL,
-    "email" TEXT NOT NULL,
+    "email" TEXT,
     "birth" TIMESTAMP(3) NOT NULL,
-    "password" TEXT NOT NULL,
+    "password" TEXT,
     "actived" BOOLEAN NOT NULL DEFAULT true,
     "delete" BOOLEAN NOT NULL DEFAULT false,
+    "uid" INTEGER,
 
     CONSTRAINT "user_pkey" PRIMARY KEY ("id")
 );
@@ -34,16 +35,16 @@ CREATE TABLE "Profiles" (
 -- CreateTable
 CREATE TABLE "Publications" (
     "id" SERIAL NOT NULL,
-    "id_profile" INTEGER NOT NULL,
+    "profileId" INTEGER NOT NULL,
     "name" VARCHAR(255) NOT NULL,
-    "user_name" TEXT,
-    "photo_profile" TEXT,
-    "profile_checked" BOOLEAN NOT NULL DEFAULT false,
-    "date_tamp" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "userName" TEXT,
+    "photo" TEXT,
+    "profileChecked" BOOLEAN NOT NULL DEFAULT false,
+    "date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "file" TEXT,
     "description" TEXT,
     "public_likes" INTEGER NOT NULL DEFAULT 0,
-    "public_coments" INTEGER NOT NULL DEFAULT 0,
+    "public_comments" INTEGER NOT NULL DEFAULT 0,
 
     CONSTRAINT "Publications_pkey" PRIMARY KEY ("id")
 );
@@ -52,10 +53,13 @@ CREATE TABLE "Publications" (
 CREATE UNIQUE INDEX "user_email_key" ON "user"("email");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "user_uid_key" ON "user"("uid");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Profiles_userName_key" ON "Profiles"("userName");
 
 -- AddForeignKey
 ALTER TABLE "Profiles" ADD CONSTRAINT "Profiles_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Publications" ADD CONSTRAINT "Publications_id_profile_fkey" FOREIGN KEY ("id_profile") REFERENCES "Profiles"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Publications" ADD CONSTRAINT "Publications_profileId_fkey" FOREIGN KEY ("profileId") REFERENCES "Profiles"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
