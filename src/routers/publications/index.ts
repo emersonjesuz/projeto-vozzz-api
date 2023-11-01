@@ -20,7 +20,7 @@ publicationsRouter.delete(
   new PublicationController().deletePublication
 );
 publicationsRouter.get(
-  "/feed",
+  "/feed/:index",
   new PublicationController().listPublications
 );
 

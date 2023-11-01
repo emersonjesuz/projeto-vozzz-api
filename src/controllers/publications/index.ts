@@ -2,8 +2,6 @@ import { Request, Response } from "express";
 import prisma from "../../database";
 import { BadRequestError, NotFoundError } from "../../helpers/api-error";
 
-let page: number = 1;
-
 export default class PublicationController {
   async createPublication(req: Request, res: Response) {
     const { profileId, file, description } = req.body;
@@ -29,8 +27,6 @@ export default class PublicationController {
       },
     });
 
-    page = 1;
-
     return res.json(publication);
   }
 
@@ -47,16 +43,16 @@ export default class PublicationController {
   }
 
   async listPublications(req: Request, res: Response) {
+    const { index } = req.params;
+    const page: number = Number(index)
+
     const publication = await prisma.publications.findMany({
       skip: (page - 1) * 10,
       take: 10,
     });
     if (!publication) throw new NotFoundError("Nenhuma publicação encontrada!");
-    if (publication.length === 0)
-      return res.json({ message: "As publicações acabaram" });
-    page++;
 
-    return res.json(publication.reverse());
+    return res.json(publication);
   }
 
   async editPublication(req: Request, res: Response) {
