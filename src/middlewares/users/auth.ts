@@ -22,9 +22,5 @@ export const authMiddleware = async (
   const user = await prisma.user.findUnique({ where: { id } });
   if (!user) throw new UnauthorizedError("Não autorizado!");
 
-  // const { password: _, ...loggedUser } = user;
-
-  // req.user = loggedUser;
-
   next();
 };

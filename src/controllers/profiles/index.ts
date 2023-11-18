@@ -2,31 +2,32 @@ import { Request, Response } from "express";
 import prisma from "../../database";
 import { BadRequestError, InvalidFormatError } from "../../helpers/api-error";
 
+type TypeProfile = "cidadao" | "politico" | "instituicao";
+
 export default class Profile {
   async createProfile(req: Request, res: Response) {
-    const { name, userName, bio, photo, interests, urlWebsite, userId } =
-      req.body;
+    const { userId, type } = req.body;
 
-    const existUser = await prisma.user.findUnique({ where: { id: userId } });
+    const user = await prisma.user.findUnique({ where: { id: userId } });
 
-    if (!existUser) throw new BadRequestError("usuario não existe");
+    if (!user) throw new BadRequestError("usuario não existe");
 
-    // teste
-    const existUserName = await prisma.profiles.findUnique({
-      where: { userName },
-    });
+    const typeProfofile: TypeProfile = type;
+    const ischecked =
+      typeProfofile !== "cidadao" &&
+      typeProfofile !== "politico" &&
+      typeProfofile !== "instituicao";
 
-    if (existUserName) throw new InvalidFormatError("perfil ja existe!");
+    if (ischecked)
+      throw new BadRequestError(
+        "você precisa escolher qual tipo de perfil deseja Proseguir!"
+      );
 
     const create = await prisma.profiles.create({
       data: {
-        name,
-        userName,
-        bio,
-        photo,
-        interests,
-        urlWebsite,
+        name: user.name,
         userId,
+        type: typeProfofile,
       },
     });
 

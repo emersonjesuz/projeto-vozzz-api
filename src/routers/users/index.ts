@@ -8,7 +8,7 @@ routerUser.post("/create", new User().createUser);
 
 routerUser.post("/login", new User().login);
 
-routerUser.put("/account/external",  new User().loginInFirebase);
+routerUser.post("/account/external", new User().loginInFirebase);
 
 routerUser.get("/users", new User().listAllUser);
 

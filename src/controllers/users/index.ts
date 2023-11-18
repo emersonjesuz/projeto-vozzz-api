@@ -103,7 +103,7 @@ export class User {
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) throw new NotFoundError("Usuário não encontrado.");
 
-    const comparePass = bcrypt.compare(password, user.password || "");
+    const comparePass = bcrypt.compare(password, user.password ?? "");
     if (!comparePass) throw new BadRequestError("E-mail ou senha inválidos.");
 
     const token = jwt.sign({ id: user.id }, process.env.JWT_PASS ?? "", {
@@ -115,20 +115,21 @@ export class User {
   }
 
   async loginInFirebase(req: Request, res: Response) {
-    const { name, uid, birth } = req.body;
+    const { name, uid } = req.body;
 
-    if (!name || !uid || !birth)
+    if (!name || !uid)
       throw new BadRequestError("Informe os dados corretamente");
 
-    const verifyLogin = await prisma.user.findUnique({ where: { uid } });
+    const verifyLogin = await prisma.user.findUnique({ where: { uid: uid } });
 
     let user;
+    const birth = new Date();
 
     if (!verifyLogin) {
-      user = await prisma.user.create({ data: { name, uid, birth } });
+      user = await prisma.user.create({ data: { name, uid: uid, birth } });
     }
 
-    const newUser = verifyLogin || user;
+    const newUser = verifyLogin ?? user;
 
     const token = jwt.sign({ id: newUser?.id }, process.env.JWT_PASS ?? "", {
       expiresIn: "6h",

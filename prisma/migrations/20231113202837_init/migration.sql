@@ -7,7 +7,7 @@ CREATE TABLE "user" (
     "password" TEXT,
     "actived" BOOLEAN NOT NULL DEFAULT true,
     "delete" BOOLEAN NOT NULL DEFAULT false,
-    "uid" INTEGER,
+    "uid" TEXT,
 
     CONSTRAINT "user_pkey" PRIMARY KEY ("id")
 );
@@ -16,6 +16,7 @@ CREATE TABLE "user" (
 CREATE TABLE "Profiles" (
     "id" SERIAL NOT NULL,
     "userId" INTEGER NOT NULL,
+    "type" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "userName" TEXT,
     "bio" TEXT,

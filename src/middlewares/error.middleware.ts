@@ -8,5 +8,7 @@ export const errorMiddleware = async (
   next: NextFunction
 ) => {
   const statusCode = err.statusCode ?? 500;
+  console.log(err);
+
   return res.status(statusCode).json({ message: err.message });
 };
