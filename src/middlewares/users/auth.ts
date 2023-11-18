@@ -18,6 +18,8 @@ export const authMiddleware = async (
 
   const token = authorization.split(" ")[1];
 
+  if (!token) throw new UnauthorizedError("Não autorizado!");
+
   const { id } = jwt.verify(token, variables.jwtPassword) as JwtPayload;
 
   const user = await prisma.user.findUnique({ where: { id } });

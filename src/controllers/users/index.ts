@@ -19,12 +19,12 @@ export class User {
       throw new InvalidFormatError("Usuário já existe!");
     }
 
-    if (!email || !name || !birth || !password) {
+    if (!email || !name || !password) {
       throw new InvalidFormatError("Campos obrigatórios.");
     }
 
     const passwordHash = await bcrypt.hash(password, 8);
-    const date = new Date(birth);
+    const date = new Date();
     const user = await prisma.user.create({
       data: {
         name,
@@ -132,7 +132,7 @@ export class User {
 
     const newUser = verifyLogin ?? user;
 
-    const token = jwt.sign({ id: newUser?.id }, process.env.JWT_PASS ?? "", {
+    const token = jwt.sign({ id: newUser?.id }, variables.jwtPassword ?? "", {
       expiresIn: "6h",
     });
 

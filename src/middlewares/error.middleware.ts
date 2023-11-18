@@ -10,5 +10,13 @@ export const errorMiddleware = async (
   const statusCode = err.statusCode ?? 500;
   console.log(err);
 
+  if (
+    statusCode === 401 ||
+    err.message === "invalid token" ||
+    err.message === "invalid signature"
+  ) {
+    return res.status(401).json({ message: "Não altorizado!" });
+  }
+
   return res.status(statusCode).json({ message: err.message });
 };
