@@ -9,11 +9,11 @@
     "allowJs": true,
     "outDir": "./dist",
 
-    // "typeRoots": ['./src/@types'],
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    "typeRoots": ["./src/@types"]
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]

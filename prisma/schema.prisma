@@ -1,0 +1,61 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id       Int      @id @default(autoincrement())
+  name     String   @map(name: "name") @db.VarChar(255)
+  email    String?  @unique
+  birth    DateTime
+  password String?
+  actived  Boolean  @default(true)
+  delete   Boolean  @default(false)
+  uid      String?  @unique
+
+  Profiles Profiles[]
+
+  @@map("user")
+}
+
+model Profiles {
+  id             Int      @id @default(autoincrement())
+  userId         Int
+  type           String
+  name           String
+  userName       String?  @unique
+  bio            String?
+  photo          String?
+  interests      String[]
+  followers      Int      @default(0)
+  following      Int      @default(0)
+  urlWebsite     String?
+  quizzes        Int      @default(0)
+  holding        Int      @default(0)
+  connection     Int      @default(0)
+  profileChecked Boolean  @default(false)
+
+  User User @relation(fields: [userId], references: [id])
+
+  Publications Publications[]
+}
+
+model Publications {
+  id              Int      @id @default(autoincrement())
+  profileId       Int
+  name            String   @map(name: "name") @db.VarChar(255)
+  userName        String?
+  photo           String?
+  profileChecked  Boolean  @default(false)
+  date            DateTime @default(now())
+  file            String?
+  description     String?
+  public_likes    Int      @default(0)
+  public_comments Int      @default(0)
+
+  Profile Profiles @relation(fields: [profileId], references: [id])
+}
