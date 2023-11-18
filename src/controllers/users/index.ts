@@ -7,6 +7,7 @@ import {
   InvalidFormatError,
   NotFoundError,
 } from "../../helpers/api-error";
+import { variables } from "../../variables/treatmentVariables";
 
 export class User {
   async createUser(req: Request, res: Response) {
@@ -106,7 +107,7 @@ export class User {
     const comparePass = bcrypt.compare(password, user.password ?? "");
     if (!comparePass) throw new BadRequestError("E-mail ou senha inválidos.");
 
-    const token = jwt.sign({ id: user.id }, process.env.JWT_PASS ?? "", {
+    const token = jwt.sign({ id: user.id }, variables.jwtPassword, {
       expiresIn: "6h",
     });
 
