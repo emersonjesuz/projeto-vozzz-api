@@ -10,10 +10,12 @@ routerUser.post("/login", new User().login);
 
 routerUser.post("/account/external", new User().loginInFirebase);
 
+routerUser.use(authMiddleware);
+
 routerUser.get("/users", new User().listAllUser);
 
 routerUser.get("/users/:id", new User().listUserId);
 
-routerUser.put("/update/:id", authMiddleware, new User().updateUser);
+routerUser.put("/update/:id", new User().updateUser);
 
 export default routerUser;
