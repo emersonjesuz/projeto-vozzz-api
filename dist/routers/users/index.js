@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const users_1 = require("../../controllers/users");
+const auth_1 = require("../../middlewares/users/auth");
+const routerUser = (0, express_1.Router)();
+routerUser.post("/create", new users_1.User().createUser);
+routerUser.post("/login", new users_1.User().login);
+routerUser.post("/account/external", new users_1.User().loginInFirebase);
+routerUser.get("/users", new users_1.User().listAllUser);
+routerUser.get("/users/:id", new users_1.User().listUserId);
+routerUser.put("/update/:id", auth_1.authMiddleware, new users_1.User().updateUser);
+exports.default = routerUser;
