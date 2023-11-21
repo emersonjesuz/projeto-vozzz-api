@@ -18,5 +18,8 @@ export const errorMiddleware = async (
     return res.status(401).json({ message: "Não altorizado!" });
   }
 
+  if (statusCode === 500)
+    return res.status(500).json({ message: "Erro interno do servidor!" });
+
   return res.status(statusCode).json({ message: err.message });
 };

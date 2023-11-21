@@ -50,7 +50,6 @@ export default class PublicationController {
       skip: (page - 1) * 10,
       take: 10,
     });
-    console.log(publication);
 
     return res.json(publication);
   }
