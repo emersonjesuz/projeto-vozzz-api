@@ -45,7 +45,7 @@ export default class Profile {
 
     const profile = await prisma.profiles.findFirst({ where: { userId: +id } });
 
-    res.json(profile ?? {});
+    res.json(profile ?? false);
   }
 
   async updateProfile(req: Request, res: Response) {
