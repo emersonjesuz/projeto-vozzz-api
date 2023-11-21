@@ -45,9 +45,7 @@ export default class Profile {
 
     const profile = await prisma.profiles.findFirst({ where: { userId: +id } });
 
-    if (!profile) throw new BadRequestError("Perfil não encontrado");
-
-    res.json(profile);
+    res.json(profile ?? {});
   }
 
   async updateProfile(req: Request, res: Response) {
