@@ -23,7 +23,7 @@ export default class PublicationController {
         profileChecked: userProfile!.profileChecked,
         date,
         file,
-        description
+        description,
       },
     });
 
@@ -44,13 +44,13 @@ export default class PublicationController {
 
   async listPublications(req: Request, res: Response) {
     const { index } = req.params;
-    const page: number = Number(index)
+    const page: number = Number(index);
 
     const publication = await prisma.publications.findMany({
       skip: (page - 1) * 10,
       take: 10,
     });
-    if (!publication) throw new NotFoundError("Nenhuma publicação encontrada!");
+    console.log(publication);
 
     return res.json(publication);
   }

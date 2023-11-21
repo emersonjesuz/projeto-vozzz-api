@@ -43,7 +43,7 @@ export default class Profile {
   async getProfile(req: Request, res: Response) {
     const { id } = req.params;
 
-    const profile = await prisma.profiles.findUnique({ where: { id: +id } });
+    const profile = await prisma.profiles.findFirst({ where: { userId: +id } });
 
     if (!profile) throw new BadRequestError("Perfil não encontrado");
 
