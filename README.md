@@ -1,3 +1,5 @@
+# o projeto sera refatorado, estamos desenvolvendo o sistema da API em java e suas tecnologias!
+
 # projeto vozz
 
 usuario
